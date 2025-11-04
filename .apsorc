@@ -1,0 +1,205 @@
+{
+  "entities": [
+    {
+      "name": "Project",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "name",
+          "type": "varchar",
+          "nullable": false,
+          "isIndex": true,
+          "isUnique": true
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "varchar",
+          "nullable": false,
+          "default": "active",
+          "values": [
+            "active",
+            "completed",
+            "archived"
+          ]
+        },
+        {
+          "name": "start_date",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "end_date",
+          "type": "date",
+          "nullable": true
+        }
+      ],
+      "indexes": [
+        {
+          "fields": [
+            "name"
+          ],
+          "unique": true
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "Task",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "varchar",
+          "nullable": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "varchar",
+          "nullable": false,
+          "default": "pending",
+          "values": [
+            "pending",
+            "in_progress",
+            "completed"
+          ]
+        },
+        {
+          "name": "priority",
+          "type": "varchar",
+          "nullable": false,
+          "default": "medium",
+          "values": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        {
+          "name": "due_date",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "project_id",
+          "type": "uuid",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "fields": [
+            "title"
+          ],
+          "unique": false
+        },
+        {
+          "fields": [
+            "project_id"
+          ],
+          "unique": false
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "Comment",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "content",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "task_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "fields": [
+            "task_id"
+          ],
+          "unique": false
+        },
+        {
+          "fields": [
+            "user_id"
+          ],
+          "unique": false
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "Assignment",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "task_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "assigned_at",
+          "type": "timestamp",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "indexes": [
+        {
+          "fields": [
+            "user_id",
+            "task_id"
+          ],
+          "unique": true
+        }
+      ],
+      "uniques": []
+    }
+  ],
+  "relationships": [
+    {
+      "from": "Project",
+      "to": "Task",
+      "type": "OneToMany"
+    },
+    {
+      "from": "Task",
+      "to": "Comment",
+      "type": "OneToMany"
+    },
+    {
+      "from": "Task",
+      "to": "Assignment",
+      "type": "OneToMany"
+    }
+  ],
+  "_removedEntities": []
+}
